@@ -5,7 +5,7 @@ import com.expediagroup.graphql.server.operations.Mutation
 import com.okeicalm.simpleJournalEntry.handler.type.CommentEntryType
 import com.okeicalm.simpleJournalEntry.handler.type.CommentType
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentCreateUseCase
-import com.okeicalm.simpleJournalEntry.usecase.commenet.CommentCreateUseCaseInput
+import com.okeicalm.simpleJournalEntry.usecase.comment.CommentCreateUseCaseInput
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentEntryInputData
 import org.springframework.sterotype.Component
 import java.time.LocalDate
