@@ -5,9 +5,13 @@ package com.okeicalm.simpleJournalEntry.infra.db.keys
 
 
 import com.okeicalm.simpleJournalEntry.infra.db.tables.Accounts
+import com.okeicalm.simpleJournalEntry.infra.db.tables.CommentEntries
+import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.JournalEntries
 import com.okeicalm.simpleJournalEntry.infra.db.tables.Journals
 import com.okeicalm.simpleJournalEntry.infra.db.tables.records.AccountsRecord
+import com.okeicalm.simpleJournalEntry.infra.db.tables.records.CommentEntriesRecord
+import com.okeicalm.simpleJournalEntry.infra.db.tables.records.CommentsRecord
 import com.okeicalm.simpleJournalEntry.infra.db.tables.records.JournalEntriesRecord
 import com.okeicalm.simpleJournalEntry.infra.db.tables.records.JournalsRecord
 
@@ -24,6 +28,8 @@ import org.jooq.impl.Internal
 
 val KEY_ACCOUNTS_CODE: UniqueKey<AccountsRecord> = Internal.createUniqueKey(Accounts.ACCOUNTS, DSL.name("KEY_accounts_code"), arrayOf(Accounts.ACCOUNTS.CODE), true)
 val KEY_ACCOUNTS_PRIMARY: UniqueKey<AccountsRecord> = Internal.createUniqueKey(Accounts.ACCOUNTS, DSL.name("KEY_accounts_PRIMARY"), arrayOf(Accounts.ACCOUNTS.ID), true)
+val KEY_COMMENT_ENTRIES_PRIMARY: UniqueKey<CommentEntriesRecord> = Internal.createUniqueKey(CommentEntries.COMMENT_ENTRIES, DSL.name("KEY_comment_entries_PRIMARY"), arrayOf(CommentEntries.COMMENT_ENTRIES.ID), true)
+val KEY_COMMENTS_PRIMARY: UniqueKey<CommentsRecord> = Internal.createUniqueKey(Comments.COMMENTS, DSL.name("KEY_comments_PRIMARY"), arrayOf(Comments.COMMENTS.ID), true)
 val KEY_JOURNAL_ENTRIES_PRIMARY: UniqueKey<JournalEntriesRecord> = Internal.createUniqueKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("KEY_journal_entries_PRIMARY"), arrayOf(JournalEntries.JOURNAL_ENTRIES.ID), true)
 val KEY_JOURNALS_PRIMARY: UniqueKey<JournalsRecord> = Internal.createUniqueKey(Journals.JOURNALS, DSL.name("KEY_journals_PRIMARY"), arrayOf(Journals.JOURNALS.ID), true)
 
@@ -31,5 +37,8 @@ val KEY_JOURNALS_PRIMARY: UniqueKey<JournalsRecord> = Internal.createUniqueKey(J
 // FOREIGN KEY definitions
 // -------------------------------------------------------------------------
 
+val COMMENT_ENTRIES_IBFK_1: ForeignKey<CommentEntriesRecord, CommentsRecord> = Internal.createForeignKey(CommentEntries.COMMENT_ENTRIES, DSL.name("comment_entries_ibfk_1"), arrayOf(CommentEntries.COMMENT_ENTRIES.COMMENT_ID), com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_COMMENTS_PRIMARY, arrayOf(Comments.COMMENTS.ID), true)
+val COMMENT_ENTRIES_IBFK_2: ForeignKey<CommentEntriesRecord, JournalsRecord> = Internal.createForeignKey(CommentEntries.COMMENT_ENTRIES, DSL.name("comment_entries_ibfk_2"), arrayOf(CommentEntries.COMMENT_ENTRIES.JOURNAL_ID), com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_JOURNALS_PRIMARY, arrayOf(Journals.JOURNALS.ID), true)
+val COMMENT_ENTRIES_IBFK_3: ForeignKey<CommentEntriesRecord, AccountsRecord> = Internal.createForeignKey(CommentEntries.COMMENT_ENTRIES, DSL.name("comment_entries_ibfk_3"), arrayOf(CommentEntries.COMMENT_ENTRIES.ACCOUNT_ID), com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_ACCOUNTS_PRIMARY, arrayOf(Accounts.ACCOUNTS.ID), true)
 val JOURNAL_ENTRIES_IBFK_1: ForeignKey<JournalEntriesRecord, JournalsRecord> = Internal.createForeignKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("journal_entries_ibfk_1"), arrayOf(JournalEntries.JOURNAL_ENTRIES.JOURNAL_ID), com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_JOURNALS_PRIMARY, arrayOf(Journals.JOURNALS.ID), true)
 val JOURNAL_ENTRIES_IBFK_2: ForeignKey<JournalEntriesRecord, AccountsRecord> = Internal.createForeignKey(JournalEntries.JOURNAL_ENTRIES, DSL.name("journal_entries_ibfk_2"), arrayOf(JournalEntries.JOURNAL_ENTRIES.ACCOUNT_ID), com.okeicalm.simpleJournalEntry.infra.db.keys.KEY_ACCOUNTS_PRIMARY, arrayOf(Accounts.ACCOUNTS.ID), true)
