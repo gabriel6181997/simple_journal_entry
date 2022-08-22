@@ -7,19 +7,19 @@ import com.okeicalm.simpleJournalEntry.handler.type.CommentType
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentCreateUseCase
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentCreateUseCaseInput
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentEntryInputData
-import org.springframework.sterotype.Component
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 
-data class CreateCommentInput(val incurredOn: Int, val createCommmentEntryInput: List<CreateCommentEntryInput>)
+data class CreateCommentInput(val incurredOn: Int, val createCommentEntryInput: List<CreateCommentEntryInput>)
 data class CreateCommentEntryInput(val side: Int, val commentId: ID, val value: Int)
 
 @Component
 class CreateCommentMutation(private val commentCreateUseCase: CommentCreateUseCase) : Mutation {
     fun createComment(input: CreateCommentInput): CommentType {
-        val commentEntryInputDatum = input.CreateCommentEntryInput.map {
+        val commentEntryInputDatum = input.createCommentEntryInput.map {
             CommentEntryInputData(
                 side = it.side.toByte(),
-                accountID = it.accountID.toString().toLong(),
+                commentId = it.commentId.toString().toLong(),
                 value = it.value
             )
         }
