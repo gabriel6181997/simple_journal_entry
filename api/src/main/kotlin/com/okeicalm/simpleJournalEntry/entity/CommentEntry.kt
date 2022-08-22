@@ -8,7 +8,6 @@ data class CommentEntry(
 ) {
     companion object {
         fun create(
-          side: Byte,
           accountId: Long,
           journalId: Long,
         ): CommentEntry {
