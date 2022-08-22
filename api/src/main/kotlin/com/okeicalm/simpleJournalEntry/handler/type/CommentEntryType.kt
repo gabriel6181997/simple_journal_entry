@@ -14,17 +14,18 @@ const val commentEntryTypeGraphQLName = "CommentEntry"
 data class CommentEntryType(
     val id: ID,
     val text: String,
-    val value: Int,
-    @GraphQLIgnore val commentId: ID,
+    val accountId: ID,
+    val journalId: ID
+//    @GraphQLIgnore val accountId: ID,
 ) {
     constructor(commentEntry: CommentEntry): this(
         ID(commentEntry.id.toString()),
-        commentEntry.side.toInt(), // Checking is required
-        commentEntry.text, // Checking is required
-        ID(commentEntry.commentId.toString())
+        commentEntry.text,
+        ID(commentEntry.accountId.toString()),
+        ID(commentEntry.journalId.toString())
     )
 
     fun account(dataFetchingEnvironment: DataFetchingEnvironment): CompletableFuture<AccountType> {
-        return dataFetchingEnvironment.getValueFromDataLoader("CommentDataLoader", commentId)
+        return dataFetchingEnvironment.getValueFromDataLoader("CommentDataLoader", accountId)
     }
 }
