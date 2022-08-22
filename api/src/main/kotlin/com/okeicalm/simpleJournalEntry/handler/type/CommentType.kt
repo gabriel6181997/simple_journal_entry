@@ -14,7 +14,7 @@ data class CommentType(
     val commentEntries: List<CommentEntryType>,
 ) {
     constructor(comment: Comment) : this(
-        id = ID(comment.id),
+        id = ID(comment.id.toString()),
         incurredOn = comment.incurredOn,
         comment.commentEntries.map { CommentEntryType(it) }
     )
