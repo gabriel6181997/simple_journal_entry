@@ -5,7 +5,7 @@ import com.okeicalm.simpleJournalEntry.entity.CommentEntry
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENT_ENTRIES
 import org.jooq.DSLContext
-import org.springframework.sterotype.Repository
+import org.springframework.stereotype.Repository
 
 interface CommentRepository {
     fun findAll(): List<Comment>
@@ -14,9 +14,9 @@ interface CommentRepository {
 }
 
 @Repository
-class CommmentRepositoryImpl(private val dslConext: DSLContext):CommentRepository {
+class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepository {
     override fun findAll(): List<Comment> {
-        val records = dslConext
+        val records = dslContext
             .select(
                 COMMENTS.ID,
                 COMMENTS.INCURRED_ON,
@@ -50,7 +50,7 @@ class CommmentRepositoryImpl(private val dslConext: DSLContext):CommentRepositor
     }
 
     override fun findById(id: Long): Comment? {
-        return dslConext
+        return dslContext
             .fetchOne(COMMENTS, COMMENTS.ID.eq(id))
             ?.into(Comment::class.java)
     }
