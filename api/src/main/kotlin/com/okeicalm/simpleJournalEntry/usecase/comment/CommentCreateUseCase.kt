@@ -1,4 +1,4 @@
-package com.okeicalm.simpleJournalEntry.usecase.journal;
+package com.okeicalm.simpleJournalEntry.usecase.comment;
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
 import com.okeicalm.simpleJournalEntry.repository.CommentEntry
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
-data class CommentEntryInputData(val side: Byte, val accountId: Long, val value: Int)
+data class CommentEntryInputData(val side: Byte, val commentId: Long, val value: Int)
 data class CommentCreateUseCaseInput(val incurredOn: LocalDate, val commentEntryInputDatum: List<CommentEntryInputData>)
 data class CommentCreateUseCaseOutput(val comment: Comment)
 
