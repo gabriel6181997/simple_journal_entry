@@ -1,8 +1,8 @@
 package com.okeicalm.simpleJournalEntry.handler.type
 
-import com.expediagroup.graphql.generator.annotations.GraphQLIngnore
+import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.annotations.GraphQLName
-import com.expeidagroup.graphql.generator.scalars.ID
+import com.expediagroup.graphql.generator.scalars.ID
 import com.expediagroup.graphql.server.extensions.getValueFromDataLoader
 import com.okeicalm.simpleJournalEntry.entity.CommentEntry
 import graphql.schema.DataFetchingEnvironment
