@@ -23,7 +23,8 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
                 COMMENT_ENTRIES.ID,
                 COMMENT_ENTRIES.TEXT,
                 COMMENT_ENTRIES.ACCOUNT_ID,
-                COMMENT_ENTRIES.JOURNAL_ID
+                COMMENT_ENTRIES.JOURNAL_ID,
+                COMMENT_ENTRIES.COMMENT_ID
             )
             .from(COMMENTS)
             .join(COMMENT_ENTRIES)
@@ -35,10 +36,11 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
         return commentMap.map { c ->
             val commentEntries = c.value.map {  ce ->
                 CommentEntry(
-                    id = ce.getValue(COMMENT_ENTRIES.ID),
-                    text = ce.getValue(COMMENT_ENTRIES.TEXT),
-                    accountId = ce.getValue(COMMENT_ENTRIES.ACCOUNT_ID),
-                    journalId = ce.getValue(COMMENT_ENTRIES.JOURNAL_ID)
+                    id = ce.getValue(COMMENT_ENTRIES.ID)!!.toInt(),
+                    text = ce.getValue(COMMENT_ENTRIES.TEXT)!!,
+                    accountId = ce.getValue(COMMENT_ENTRIES.ACCOUNT_ID)!!,
+                    journalId = ce.getValue(COMMENT_ENTRIES.JOURNAL_ID)!!,
+                    commentId = ce.getValue(COMMENT_ENTRIES.COMMENT_ID)!!
                 )
             }
             Comment(
@@ -78,10 +80,11 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
             .where(COMMENT_ENTRIES.COMMENT_ID.eq(commentId))
             .fetch {
                 CommentEntry(
-                    id = it.getValue(COMMENT_ENTRIES.ID)!!,
+                    id = it.getValue(COMMENT_ENTRIES.ID)!!.toInt(),
                     text = it.getValue(COMMENT_ENTRIES.TEXT)!!,
                     accountId = it.getValue(COMMENT_ENTRIES.ACCOUNT_ID)!!,
                     journalId = it.getValue(COMMENT_ENTRIES.JOURNAL_ID)!!,
+                    commentId = it.getValue(COMMENT_ENTRIES.COMMENT_ID)!!
                 )
             }
         return comment.copy(id = commentId, commentEntries = createdCommentEntries)
