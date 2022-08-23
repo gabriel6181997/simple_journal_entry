@@ -11,6 +11,7 @@ data class CommentEntry(
         fun create(
           accountId: Long,
           journalId: Long,
+          text: String,
         ): CommentEntry {
             return CommentEntry(
                 id = 0,
