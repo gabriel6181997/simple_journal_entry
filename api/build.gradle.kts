@@ -87,7 +87,7 @@ jooq {
 }
 
 flyway {
-    url = System.getenv("MYSQL_URL")
+    url = System.getenv("mysql://127.0.0.1:3306/simple_journal_entry_db?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true")
     user = System.getenv("MYSQL_USER")
     password = System.getenv("MYSQL_PASSWORD")
 }
