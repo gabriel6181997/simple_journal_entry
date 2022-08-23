@@ -22,7 +22,7 @@ import org.jooq.Identity
 import org.jooq.Index
 import org.jooq.Name
 import org.jooq.Record
-import org.jooq.Row6
+import org.jooq.Row5
 import org.jooq.Schema
 import org.jooq.Table
 import org.jooq.TableField
@@ -80,26 +80,21 @@ open class CommentEntries(
     val COMMENT_ID: TableField<CommentEntriesRecord, Long?> = createField(DSL.name("comment_id"), SQLDataType.BIGINT.nullable(false), this, "")
 
     /**
+     * The column <code>simple_journal_entry_db.comment_entries.text</code>.
+     */
+    val TEXT: TableField<CommentEntriesRecord, String?> = createField(DSL.name("text"), SQLDataType.CLOB.nullable(false), this, "")
+
+    /**
      * The column
      * <code>simple_journal_entry_db.comment_entries.journal_id</code>.
      */
     val JOURNAL_ID: TableField<CommentEntriesRecord, Long?> = createField(DSL.name("journal_id"), SQLDataType.BIGINT.nullable(false), this, "")
 
     /**
-     * The column <code>simple_journal_entry_db.comment_entries.side</code>.
-     */
-    val SIDE: TableField<CommentEntriesRecord, Byte?> = createField(DSL.name("side"), SQLDataType.TINYINT.nullable(false), this, "")
-
-    /**
      * The column
      * <code>simple_journal_entry_db.comment_entries.account_id</code>.
      */
     val ACCOUNT_ID: TableField<CommentEntriesRecord, Long?> = createField(DSL.name("account_id"), SQLDataType.BIGINT.nullable(false), this, "")
-
-    /**
-     * The column <code>simple_journal_entry_db.comment_entries.value</code>.
-     */
-    val VALUE: TableField<CommentEntriesRecord, Int?> = createField(DSL.name("value"), SQLDataType.INTEGER.nullable(false), this, "")
 
     private constructor(alias: Name, aliased: Table<CommentEntriesRecord>?): this(alias, null, null, aliased, null)
     private constructor(alias: Name, aliased: Table<CommentEntriesRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, aliased, parameters)
@@ -127,26 +122,26 @@ open class CommentEntries(
     override fun getIndexes(): List<Index> = listOf(COMMENT_ENTRIES_FK_ACCOUNT, COMMENT_ENTRIES_FK_COMMENT, COMMENT_ENTRIES_FK_JOURNAL)
     override fun getIdentity(): Identity<CommentEntriesRecord, Long?> = super.getIdentity() as Identity<CommentEntriesRecord, Long?>
     override fun getPrimaryKey(): UniqueKey<CommentEntriesRecord> = KEY_COMMENT_ENTRIES_PRIMARY
-    override fun getReferences(): List<ForeignKey<CommentEntriesRecord, *>> = listOf(COMMENT_ENTRIES_IBFK_1, COMMENT_ENTRIES_IBFK_2, COMMENT_ENTRIES_IBFK_3)
+    override fun getReferences(): List<ForeignKey<CommentEntriesRecord, *>> = listOf(COMMENT_ENTRIES_IBFK_3, COMMENT_ENTRIES_IBFK_1, COMMENT_ENTRIES_IBFK_2)
 
     private lateinit var _comments: Comments
     private lateinit var _journals: Journals
     private lateinit var _accounts: Accounts
     fun comments(): Comments {
         if (!this::_comments.isInitialized)
-            _comments = Comments(this, COMMENT_ENTRIES_IBFK_1)
+            _comments = Comments(this, COMMENT_ENTRIES_IBFK_3)
 
         return _comments;
     }
     fun journals(): Journals {
         if (!this::_journals.isInitialized)
-            _journals = Journals(this, COMMENT_ENTRIES_IBFK_2)
+            _journals = Journals(this, COMMENT_ENTRIES_IBFK_1)
 
         return _journals;
     }
     fun accounts(): Accounts {
         if (!this::_accounts.isInitialized)
-            _accounts = Accounts(this, COMMENT_ENTRIES_IBFK_3)
+            _accounts = Accounts(this, COMMENT_ENTRIES_IBFK_2)
 
         return _accounts;
     }
@@ -164,7 +159,7 @@ open class CommentEntries(
     override fun rename(name: Name): CommentEntries = CommentEntries(name, null)
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
-    override fun fieldsRow(): Row6<Long?, Long?, Long?, Byte?, Long?, Int?> = super.fieldsRow() as Row6<Long?, Long?, Long?, Byte?, Long?, Int?>
+    override fun fieldsRow(): Row5<Long?, Long?, String?, Long?, Long?> = super.fieldsRow() as Row5<Long?, Long?, String?, Long?, Long?>
 }
