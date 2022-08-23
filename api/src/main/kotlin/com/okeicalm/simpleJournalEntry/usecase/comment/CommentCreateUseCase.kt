@@ -1,13 +1,13 @@
 package com.okeicalm.simpleJournalEntry.usecase.comment;
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
-import com.okeicalm.simpleJournalEntry.repository.CommentEntry
+import com.okeicalm.simpleJournalEntry.entity.CommentEntry
 import com.okeicalm.simpleJournalEntry.repository.CommentRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
-data class CommentEntryInputData(val side: Byte, val commentId: Long, val value: Int)
+data class CommentEntryInputData(val text: String, val accountID: Long, val journalID:Long )
 data class CommentCreateUseCaseInput(val incurredOn: LocalDate, val commentEntryInputDatum: List<CommentEntryInputData>)
 data class CommentCreateUseCaseOutput(val comment: Comment)
 
@@ -23,9 +23,9 @@ class CommentCreateUseCaseImpl(
     override fun call(input: CommentCreateUseCaseInput): CommentCreateUseCaseOutput {
         val commentEntries = input.commentEntryInputDatum.map {
             CommentEntry.create(
-                side = it.side,
+                text = it.text,
                 accountId = it.accountID,
-                value = it.value
+                journalId = it.journalID
             )
         }
         val comment = Comment.create(

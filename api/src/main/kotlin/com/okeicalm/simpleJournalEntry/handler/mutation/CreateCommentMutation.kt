@@ -11,16 +11,16 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 data class CreateCommentInput(val incurredOn: Int, val createCommentEntryInput: List<CreateCommentEntryInput>)
-data class CreateCommentEntryInput(val side: Int, val commentId: ID, val value: Int)
+data class CreateCommentEntryInput(val text: String, val accountID: ID, val journalID: ID)
 
 @Component
 class CreateCommentMutation(private val commentCreateUseCase: CommentCreateUseCase) : Mutation {
     fun createComment(input: CreateCommentInput): CommentType {
         val commentEntryInputDatum = input.createCommentEntryInput.map {
             CommentEntryInputData(
-                side = it.side.toByte(),
-                commentId = it.commentId.toString().toLong(),
-                value = it.value
+                text = it.text,
+                accountID = it.accountID.toString().toLong(),
+                journalID = it.journalID.toString().toLong()
             )
         }
         val inputData = CommentCreateUseCaseInput(
