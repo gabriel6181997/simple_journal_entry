@@ -2,16 +2,25 @@ package com.okeicalm.simpleJournalEntry.repository
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
 import com.okeicalm.simpleJournalEntry.entity.CommentEntry
+import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENT_ENTRIES
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
+import java.time.LocalDate
 
 interface CommentRepository {
     fun findAll(): List<Comment>
     fun findById(id: Long): Comment?
     fun create(comment: Comment): Comment
 }
+data class UpdateCommentUseCaseInput(
+    val id: Long,
+    val incurredOn: LocalDate,
+    val commentEntries: List<CommentEntry>,
+)
+
+data class UpdateCommentUseCaseOutput(val comment: Comment)
 
 @Repository
 class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepository {
@@ -88,6 +97,22 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
                 )
             }
         return comment.copy(id = commentId, commentEntries = createdCommentEntries)
+    }
+
+     fun update(input: UpdateCommentUseCaseInput):UpdateCommentUseCaseOutput {
+        val comment = this.findById(input.id)
+
+        val updateComment = comment?.copy(
+            id = this.id,
+            incurredOn = this.incurredOn,
+            commentEntries = this.listOf(CommentEntry)
+        )
+
+//        val commentErrors = validate(updateComment)
+//        return if (commentErrors.isEmpty()) {
+//
+//        }
+
     }
 
     private fun bulkInsertCommentEntry(commentEntries: List<CommentEntry>) {
