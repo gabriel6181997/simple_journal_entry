@@ -9,22 +9,25 @@ import java.time.LocalDate
 
 data class CommentUpdateUseCaseInput(val id: Long, val incurredOn: LocalDate, val commentEntries: List<CommentEntry>)
 
-data class CommentUpdateUseCaseOutput(val comment: Comment)
+data class CommentUpdateUseCaseOutput(
+    val comment: Comment,
+)
 
 interface CommentUpdateUseCase {
     fun call(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput
 }
 
 @Service
-class CommentUpdateUseCaseImpl(private val commentRepository: CommentRepository): CommentUpdateUseCase {
+class CommentUpdateUseCaseImpl(private val commentRepositoryImpl: CommentRepository): CommentUpdateUseCase {
     @Transactional
     override fun call(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput {
+
         val comment = Comment(
             id = input.id,
             incurredOn = input.incurredOn,
-            commentEntries = input.commentEntries
+            commentEntries = input.commentEntries,
         )
 
-        return CommentUpdateUseCaseOutput(commentRepository.update(comment))
+        return CommentUpdateUseCaseOutput(comment)
     }
 }

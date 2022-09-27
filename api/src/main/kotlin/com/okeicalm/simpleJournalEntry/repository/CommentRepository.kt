@@ -2,26 +2,19 @@ package com.okeicalm.simpleJournalEntry.repository
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
 import com.okeicalm.simpleJournalEntry.entity.CommentEntry
-import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENT_ENTRIES
+import com.okeicalm.simpleJournalEntry.usecase.comment.CommentUpdateUseCaseInput
+import com.okeicalm.simpleJournalEntry.usecase.comment.CommentUpdateUseCaseOutput
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
 
 interface CommentRepository {
     fun findAll(): List<Comment>
     fun findById(id: Long): Comment?
     fun create(comment: Comment): Comment
+    fun update(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput?
 }
-data class UpdateCommentUseCaseInput(
-    val id: Long,
-    val incurredOn: LocalDate,
-    val commentEntries: List<CommentEntry>,
-)
-
-data class UpdateCommentUseCaseOutput(val comment: Comment)
-
 @Repository
 class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepository {
     override fun findAll(): List<Comment> {
@@ -99,20 +92,20 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
         return comment.copy(id = commentId, commentEntries = createdCommentEntries)
     }
 
-     fun update(input: UpdateCommentUseCaseInput):UpdateCommentUseCaseOutput {
+    override fun update(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput? {
         val comment = this.findById(input.id)
 
         val updateComment = comment?.copy(
-            id = this.id,
-            incurredOn = this.incurredOn,
-            commentEntries = this.listOf(CommentEntry)
+            id = input.id,
+            incurredOn = input.incurredOn,
+            commentEntries = input.commentEntries,
         )
 
-//        val commentErrors = validate(updateComment)
-//        return if (commentErrors.isEmpty()) {
-//
-//        }
-
+        return if (updateComment != null) {
+            CommentUpdateUseCaseOutput(updateComment)
+        } else {
+            null
+        }
     }
 
     private fun bulkInsertCommentEntry(commentEntries: List<CommentEntry>) {
