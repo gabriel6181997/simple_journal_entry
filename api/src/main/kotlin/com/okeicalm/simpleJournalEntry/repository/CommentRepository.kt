@@ -2,6 +2,7 @@ package com.okeicalm.simpleJournalEntry.repository
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
 import com.okeicalm.simpleJournalEntry.entity.CommentEntry
+import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENT_ENTRIES
 import com.okeicalm.simpleJournalEntry.usecase.comment.CommentUpdateUseCaseInput
@@ -13,7 +14,7 @@ interface CommentRepository {
     fun findAll(): List<Comment>
     fun findById(id: Long): Comment?
     fun create(comment: Comment): Comment
-    fun update(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput?
+    fun update(comment: Comment): Comment
 }
 @Repository
 class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepository {
@@ -92,20 +93,14 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
         return comment.copy(id = commentId, commentEntries = createdCommentEntries)
     }
 
-    override fun update(input: CommentUpdateUseCaseInput): CommentUpdateUseCaseOutput? {
-        val comment = this.findById(input.id)
-
-        val updateComment = comment?.copy(
-            id = input.id,
-            incurredOn = input.incurredOn,
-            commentEntries = input.commentEntries,
-        )
-
-        return if (updateComment != null) {
-            CommentUpdateUseCaseOutput(updateComment)
-        } else {
-            null
-        }
+    override fun update(comment: Comment): Comment {
+        dslContext
+            .update(Comments.COMMENTS)
+            .set(Comments.COMMENTS.ID, comment.id)
+            .set(Comments.COMMENTS.INCURRED_ON, comment.incurredOn)
+            .where(Comments.COMMENTS.ID.eq(comment.id))
+            .execute()
+        return comment
     }
 
     private fun bulkInsertCommentEntry(commentEntries: List<CommentEntry>) {
