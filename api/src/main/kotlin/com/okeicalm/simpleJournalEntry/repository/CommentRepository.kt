@@ -2,11 +2,10 @@ package com.okeicalm.simpleJournalEntry.repository
 
 import com.okeicalm.simpleJournalEntry.entity.Comment
 import com.okeicalm.simpleJournalEntry.entity.CommentEntry
+import com.okeicalm.simpleJournalEntry.infra.db.tables.CommentEntries
 import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENTS
 import com.okeicalm.simpleJournalEntry.infra.db.tables.references.COMMENT_ENTRIES
-import com.okeicalm.simpleJournalEntry.usecase.comment.CommentUpdateUseCaseInput
-import com.okeicalm.simpleJournalEntry.usecase.comment.CommentUpdateUseCaseOutput
 import org.jooq.DSLContext
 import org.springframework.stereotype.Repository
 
@@ -100,6 +99,19 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
             .set(Comments.COMMENTS.INCURRED_ON, comment.incurredOn)
             .where(Comments.COMMENTS.ID.eq(comment.id))
             .execute()
+
+          for (ce in comment.commentEntries) {
+              dslContext
+                  .update(CommentEntries.COMMENT_ENTRIES)
+                  .set(CommentEntries.COMMENT_ENTRIES.ID, ce.id)
+                  .set(CommentEntries.COMMENT_ENTRIES.COMMENT_ID, ce.commentId)
+                  .set(CommentEntries.COMMENT_ENTRIES.TEXT, ce.text)
+                  .set(CommentEntries.COMMENT_ENTRIES.ACCOUNT_ID, ce.accountId)
+                  .set(CommentEntries.COMMENT_ENTRIES.JOURNAL_ID, ce.journalId)
+                  .where(COMMENT_ENTRIES.ID.eq(ce.id))
+                  .execute()
+          }
+
         return comment
     }
 
