@@ -1,7 +1,7 @@
 package com.okeicalm.simpleJournalEntry.entity
 
 data class CommentEntry(
-    val id: Int,
+    val id: Long,
     val commentId: Long,
     val text: String,
     val accountId: Long,

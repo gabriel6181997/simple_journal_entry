@@ -38,7 +38,7 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
         return commentMap.map { c ->
             val commentEntries = c.value.map {  ce ->
                 CommentEntry(
-                    id = ce.getValue(COMMENT_ENTRIES.ID)!!.toInt(),
+                    id = ce.getValue(COMMENT_ENTRIES.ID)!!,
                     text = ce.getValue(COMMENT_ENTRIES.TEXT)!!,
                     accountId = ce.getValue(COMMENT_ENTRIES.ACCOUNT_ID)!!,
                     journalId = ce.getValue(COMMENT_ENTRIES.JOURNAL_ID)!!,
@@ -82,7 +82,7 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
             .where(COMMENT_ENTRIES.COMMENT_ID.eq(commentId))
             .fetch {
                 CommentEntry(
-                    id = it.getValue(COMMENT_ENTRIES.ID)!!.toInt(),
+                    id = it.getValue(COMMENT_ENTRIES.ID)!!,
                     text = it.getValue(COMMENT_ENTRIES.TEXT)!!,
                     accountId = it.getValue(COMMENT_ENTRIES.ACCOUNT_ID)!!,
                     journalId = it.getValue(COMMENT_ENTRIES.JOURNAL_ID)!!,
