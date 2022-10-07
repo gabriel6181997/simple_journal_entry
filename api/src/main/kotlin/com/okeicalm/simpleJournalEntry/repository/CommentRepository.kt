@@ -14,6 +14,7 @@ interface CommentRepository {
     fun findById(id: Long): Comment?
     fun create(comment: Comment): Comment
     fun update(comment: Comment): Comment
+    fun delete(id: Long): Long
 }
 @Repository
 class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepository {
@@ -113,6 +114,14 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
           }
 
         return comment
+    }
+
+    override fun delete(id: Long): Long {
+        dslContext
+            .delete(Comments.COMMENTS)
+            .where(Comments.COMMENTS.ID.eq(id))
+            .execute()
+        return id
     }
 
     private fun bulkInsertCommentEntry(commentEntries: List<CommentEntry>) {
