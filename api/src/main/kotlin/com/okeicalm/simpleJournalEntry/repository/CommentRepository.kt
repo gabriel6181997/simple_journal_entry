@@ -108,7 +108,7 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
                   .set(CommentEntries.COMMENT_ENTRIES.TEXT, ce.text)
                   .set(CommentEntries.COMMENT_ENTRIES.ACCOUNT_ID, ce.accountId)
                   .set(CommentEntries.COMMENT_ENTRIES.JOURNAL_ID, ce.journalId)
-                  .where(COMMENT_ENTRIES.ID.eq(ce.id))
+                  .where(CommentEntries.COMMENT_ENTRIES.ID.eq(ce.id))
                   .execute()
           }
 
