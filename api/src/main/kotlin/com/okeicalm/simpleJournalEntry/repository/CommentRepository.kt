@@ -115,16 +115,20 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
               }
           }
 
-
-
         return comment
     }
 
     override fun delete(id: Long): Long {
         dslContext
+            .delete(CommentEntries.COMMENT_ENTRIES)
+            .where(CommentEntries.COMMENT_ENTRIES.COMMENT_ID.eq(id))
+            .execute()
+
+        dslContext
             .delete(Comments.COMMENTS)
             .where(Comments.COMMENTS.ID.eq(id))
             .execute()
+
         return id
     }
 
