@@ -70,9 +70,9 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
 
         val commentId = record.id!!
 
-        val commentEntryWithCommentId = comment.commentEntries.map {
+        val commentEntryWithCommentId = comment.commentEntries?.map {
             it.copy(commentId = commentId)
-        }
+        }!!
 
         // For CommentEntry
         bulkInsertCommentEntry(commentEntryWithCommentId)
@@ -101,17 +101,21 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
             .where(Comments.COMMENTS.ID.eq(comment.id))
             .execute()
 
-          for (ce in comment.commentEntries) {
-              dslContext
-                  .update(CommentEntries.COMMENT_ENTRIES)
-                  .set(CommentEntries.COMMENT_ENTRIES.ID, ce.id)
-                  .set(CommentEntries.COMMENT_ENTRIES.COMMENT_ID, ce.commentId)
-                  .set(CommentEntries.COMMENT_ENTRIES.TEXT, ce.text)
-                  .set(CommentEntries.COMMENT_ENTRIES.ACCOUNT_ID, ce.accountId)
-                  .set(CommentEntries.COMMENT_ENTRIES.JOURNAL_ID, ce.journalId)
-                  .where(CommentEntries.COMMENT_ENTRIES.ID.eq(ce.id))
-                  .execute()
+          if (comment.commentEntries != null) {
+              for (ce in comment.commentEntries) {
+                  dslContext
+                      .update(CommentEntries.COMMENT_ENTRIES)
+                      .set(CommentEntries.COMMENT_ENTRIES.ID, ce.id)
+                      .set(CommentEntries.COMMENT_ENTRIES.COMMENT_ID, ce.commentId)
+                      .set(CommentEntries.COMMENT_ENTRIES.TEXT, ce.text)
+                      .set(CommentEntries.COMMENT_ENTRIES.ACCOUNT_ID, ce.accountId)
+                      .set(CommentEntries.COMMENT_ENTRIES.JOURNAL_ID, ce.journalId)
+                      .where(CommentEntries.COMMENT_ENTRIES.ID.eq(ce.id))
+                      .execute()
+              }
           }
+
+
 
         return comment
     }

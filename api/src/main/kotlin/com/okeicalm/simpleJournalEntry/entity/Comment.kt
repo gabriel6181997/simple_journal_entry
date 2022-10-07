@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class Comment (
   val id: Long,
   val incurredOn: LocalDate,
-  val commentEntries: List<CommentEntry>
+  val commentEntries: List<CommentEntry>?
 ) {
   companion object {
     fun create(
