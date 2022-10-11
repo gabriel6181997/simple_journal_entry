@@ -55,10 +55,44 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
     }
 
     override fun findById(id: Long): Comment? {
-        return dslContext
-            .fetchOne(COMMENTS, COMMENTS.ID.eq(id))
-            ?.into(Comment::class.java)
+        val records = dslContext
+            .select(
+                COMMENTS.ID,
+                COMMENTS.INCURRED_ON,
+                COMMENT_ENTRIES.ID,
+                COMMENT_ENTRIES.TEXT,
+                COMMENT_ENTRIES.ACCOUNT_ID,
+                COMMENT_ENTRIES.JOURNAL_ID,
+                COMMENT_ENTRIES.COMMENT_ID
+            )
+            .from(COMMENTS)
+            .join(COMMENT_ENTRIES)
+            .on(COMMENTS.ID.eq(COMMENT_ENTRIES.COMMENT_ID))
+            .where(COMMENTS.ID.eq(id))
+            .fetch()
+
+        var recordsMap = records.map { c ->
+            val commentEntries = c.map {  ce ->
+                CommentEntry(
+                    id = ce.getValue(COMMENT_ENTRIES.ID)!!,
+                    text = ce.getValue(COMMENT_ENTRIES.TEXT)!!,
+                    accountId = ce.getValue(COMMENT_ENTRIES.ACCOUNT_ID)!!,
+                    journalId = ce.getValue(COMMENT_ENTRIES.JOURNAL_ID)!!,
+                    commentId = ce.getValue(COMMENT_ENTRIES.COMMENT_ID)!!
+                )
+            }
+
+            Comment(
+                id = c.getValue(COMMENTS.ID)!!,
+                incurredOn = c.getValue(COMMENTS.INCURRED_ON)!!,
+                commentEntries =  arrayListOf(commentEntries)
+            )
+        }
+
+        return recordsMap.first()
     }
+
+
     override fun create(comment: Comment): Comment {
         // For Comment
         val record = dslContext
