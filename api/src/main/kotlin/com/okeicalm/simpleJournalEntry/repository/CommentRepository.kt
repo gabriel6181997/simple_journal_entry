@@ -70,9 +70,9 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
 
         val commentId = record.id!!
 
-        val commentEntryWithCommentId = comment.commentEntries?.map {
+        val commentEntryWithCommentId = comment.commentEntries.map {
             it.copy(commentId = commentId)
-        }!!
+        }
 
         // For CommentEntry
         bulkInsertCommentEntry(commentEntryWithCommentId)
@@ -101,7 +101,6 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
             .where(Comments.COMMENTS.ID.eq(comment.id))
             .execute()
 
-          if (comment.commentEntries != null) {
               for (ce in comment.commentEntries) {
                   dslContext
                       .update(CommentEntries.COMMENT_ENTRIES)
@@ -113,7 +112,6 @@ class CommentRepositoryImpl(private val dslContext: DSLContext):CommentRepositor
                       .where(CommentEntries.COMMENT_ENTRIES.ID.eq(ce.id))
                       .execute()
               }
-          }
 
         return comment
     }

@@ -32,7 +32,7 @@ class CreateCommentMutation(private val commentCreateUseCase: CommentCreateUseCa
         return CommentType(
           id = ID(outputData.comment.id.toString()),
           incurredOn = outputData.comment.incurredOn,
-          commentEntries = outputData.comment.commentEntries?.map { CommentEntryType(it)}!!
+          commentEntries = outputData.comment.commentEntries.map { CommentEntryType(it)}
         )
     }
 }

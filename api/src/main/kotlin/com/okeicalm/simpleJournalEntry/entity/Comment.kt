@@ -2,10 +2,10 @@ package com.okeicalm.simpleJournalEntry.entity
 
 import java.time.LocalDate
 
-data class Comment (
-  val id: Long,
-  val incurredOn: LocalDate,
-  val commentEntries: List<CommentEntry>?
+data class Comment(
+    val id: Long,
+    val incurredOn: LocalDate,
+    val commentEntries: List<CommentEntry>
 ) {
   companion object {
     fun create(

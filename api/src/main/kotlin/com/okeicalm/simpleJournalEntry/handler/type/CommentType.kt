@@ -16,6 +16,6 @@ data class CommentType(
     constructor(comment: Comment) : this(
         id = ID(comment.id.toString()),
         incurredOn = comment.incurredOn,
-        comment.commentEntries?.map { CommentEntryType(it) }!!
+        comment.commentEntries.map { CommentEntryType(it) }
     )
 }
