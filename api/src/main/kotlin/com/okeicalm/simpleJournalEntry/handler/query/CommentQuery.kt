@@ -11,4 +11,13 @@ class CommentQuery(private val repository: CommentRepository) : Query {
         val comments = repository.findAll()
         return comments.map { CommentType(it) }
     }
+
+    fun oneComment(id: Long): CommentType? {
+        val comment = repository.findById(id)
+        return if(comment!= null ) {
+            return CommentType(comment)
+        } else {
+            return null
+        }
+    }
 }
