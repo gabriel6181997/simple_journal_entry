@@ -5,6 +5,8 @@ package com.okeicalm.simpleJournalEntry.infra.db
 
 
 import com.okeicalm.simpleJournalEntry.infra.db.tables.Accounts
+import com.okeicalm.simpleJournalEntry.infra.db.tables.CommentEntries
+import com.okeicalm.simpleJournalEntry.infra.db.tables.Comments
 import com.okeicalm.simpleJournalEntry.infra.db.tables.JournalEntries
 import com.okeicalm.simpleJournalEntry.infra.db.tables.Journals
 
@@ -34,6 +36,16 @@ open class SimpleJournalEntryDb : SchemaImpl("simple_journal_entry_db", DefaultC
     val ACCOUNTS: Accounts get() = Accounts.ACCOUNTS
 
     /**
+     * The table <code>simple_journal_entry_db.comment_entries</code>.
+     */
+    val COMMENT_ENTRIES: CommentEntries get() = CommentEntries.COMMENT_ENTRIES
+
+    /**
+     * The table <code>simple_journal_entry_db.comments</code>.
+     */
+    val COMMENTS: Comments get() = Comments.COMMENTS
+
+    /**
      * The table <code>simple_journal_entry_db.journal_entries</code>.
      */
     val JOURNAL_ENTRIES: JournalEntries get() = JournalEntries.JOURNAL_ENTRIES
@@ -47,6 +59,8 @@ open class SimpleJournalEntryDb : SchemaImpl("simple_journal_entry_db", DefaultC
 
     override fun getTables(): List<Table<*>> = listOf(
         Accounts.ACCOUNTS,
+        CommentEntries.COMMENT_ENTRIES,
+        Comments.COMMENTS,
         JournalEntries.JOURNAL_ENTRIES,
         Journals.JOURNALS
     )

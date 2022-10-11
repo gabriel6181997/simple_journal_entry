@@ -12,6 +12,7 @@ class CustomSchemaGeneratorHooks : SchemaGeneratorHooks {
     override fun willGenerateGraphQLType(type: KType): GraphQLType? = when (type.classifier as? KClass<*>) {
         ZonedDateTime::class -> ExtendedScalars.DateTime
         LocalDate::class -> ExtendedScalars.Date
+        Long::class -> ExtendedScalars.GraphQLLong
         else -> null
     }
 }

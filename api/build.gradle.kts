@@ -62,10 +62,10 @@ jooq {
             jooqConfiguration.apply {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc.apply {
-                    username = System.getenv("MYSQL_USER")
-                    password = System.getenv("MYSQL_PASSWORD")
+                    username = "mysqluser"
+                    password = "password"
                     driver = "com.mysql.cj.jdbc.Driver"
-                    url = System.getenv("MYSQL_URL")
+                    url = "jdbc:mysql://127.0.0.1:3306/simple_journal_entry_db?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
                 }
                 generator.apply {
                     name = "org.jooq.codegen.KotlinGenerator"
@@ -88,7 +88,7 @@ jooq {
 }
 
 flyway {
-    url = System.getenv("MYSQL_URL")
+    url = System.getenv("mysql://127.0.0.1:3306/simple_journal_entry_db?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true")
     user = System.getenv("MYSQL_USER")
     password = System.getenv("MYSQL_PASSWORD")
 }

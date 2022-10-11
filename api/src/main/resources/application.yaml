@@ -3,13 +3,14 @@ graphql:
     - "com.okeicalm.simpleJournalEntry"
 spring:
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+     url: "jdbc:mysql://127.0.0.1:3306/simple_journal_entry_db?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+     username: "mysqluser"
+     password: "password"
+
   flyway:
-    url: ${MYSQL_URL}
-    user: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: "jdbc:mysql://127.0.0.1:3306/simple_journal_entry_db?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+    user: "mysqluser"
+    password: "password"
 logging:
   level:
     sql: "debug"
